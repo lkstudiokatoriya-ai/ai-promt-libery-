@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="hi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Study Prompt Library | 10k+ Prompts</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons for Professional UI -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 900: '#1e3a8a',
+                        },
+                        dark: {
+                            bg: '#0f172a', surface: '#1e293b', border: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar for large data */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        @media (prefers-color-scheme: dark) {
+            ::-webkit-scrollbar-thumb { background: #475569; }
+        }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        body {
+            background-color: #f8fafc;
+        }
+        @media (prefers-color-scheme: dark) {
+            body { background-color: #0f172a; color: #f1f5f9; }
+        }
+
+        .card-hover {
+            transition: all 0.2s ease-in-out;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
+        }
+        @media (prefers-color-scheme: dark) {
+            .card-hover:hover { box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5); }
+        }
+    </style>
+</head>
+<body class="antialiased flex h-screen overflow-hidden text-slate-800 dark:text-slate-200 transition-colors duration-300">
+
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="sidebarBackdrop" class="fixed inset-0 bg-slate-900/50 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar (Left Panel) -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-dark-surface border-r border-slate-200 dark:border-dark-border transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col h-full">
+        <!-- Logo Area -->
+        <div class="h-16 flex items-center px-6 border-b border-slate-200 dark:border-dark-border">
+            <i class="ph-fill ph-brain text-brand-600 text-2xl mr-2"></i>
+            <span class="text-xl font-bold tracking-tight">PromptVault</span>
+        </div>
+
+        <!-- Sidebar Links -->
+        <div class="flex-1 overflow-y-auto py-4 px-3 space-y-1 no-scrollbar">
+            <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-4">Library</p>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400 rounded-lg font-medium">
+                <i class="ph ph-books text-lg"></i> All Prompts
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg font-medium transition-colors">
+                <i class="ph ph-star text-lg"></i> Favorites
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg font-medium transition-colors">
+                <i class="ph ph-clock-counter-clockwise text-lg"></i> Recently Added
+            </a>
+
+            <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6">Subjects</p>
+            <div id="sidebarCategories" class="space-y-1">
+                <!-- Categories loaded via JS -->
+            </div>
+        </div>
+
+        <!-- Bottom User / System Area -->
+        <div class="p-4 border-t border-slate-200 dark:border-dark-border">
+            <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-3 text-sm flex items-center justify-between">
+                <div>
+                    <p class="font-bold">Storage</p>
+                    <p class="text-xs text-slate-500">1,245 Prompts</p>
+                </div>
+                <i class="ph-fill ph-database text-slate-400 text-xl"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-full w-full bg-slate-50 dark:bg-dark-bg relative">
+        
+        <!-- Top Navbar -->
+        <header class="h-16 flex items-center justify-between px-4 lg:px-8 border-b border-slate-200 dark:border-dark-border bg-white dark:bg-dark-surface z-10 sticky top-0">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-slate-700 dark:hover:text-white">
+                    <i class="ph ph-list text-2xl"></i>
+                </button>
+                <div class="relative hidden sm:block w-96 group">
+                    <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-500"></i>
+                    <input type="text" id="searchInput" placeholder="Search prompts..." class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm dark:text-white transition-all">
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-sm transition-all active:scale-95">
+                    <i class="ph ph-plus-circle text-lg"></i> <span class="hidden sm:inline">Add Prompt</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Search Bar (Mobile only) -->
+        <div class="sm:hidden p-4 bg-white dark:bg-dark-surface border-b border-slate-200 dark:border-dark-border relative z-0">
+            <div class="relative">
+                <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="mobileSearchInput" placeholder="Search prompts..." class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+            </div>
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-4 lg:p-8" id="mainScrollArea">
+            
+            <!-- Page Header -->
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                <div>
+                    <h1 class="text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-white" id="pageTitle">All Prompts</h1>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Showing <span id="promptCount">0</span> prompts in your library.</p>
+                </div>
+                
+                <!-- Filters -->
+                <div class="flex gap-2">
+                    <select class="bg-white dark:bg-dark-surface border border-slate-200 dark:border-dark-border text-sm rounded-lg px-3 py-2 outline-none focus:border-brand-500">
+                        <option>Newest First</option>
+                        <option>Oldest First</option>
+                        <option>Most Used</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Javascript से यहाँ Cards लोड होंगे -->
+            </div>
+
+            <!-- Load More Button (Simulation for large data) -->
+            <div class="mt-10 flex justify-center pb-10" id="loadMoreContainer">
+                <button onclick="loadMoreCards()" class="px-6 py-3 bg-white dark:bg-dark-surface border border-slate-200 dark:border-dark-border rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-2">
+                    <i class="ph ph-spinner-gap animate-spin hidden" id="loadSpinner"></i>
+                    <span id="loadText">Load More Prompts</span>
+                </button>
+            </div>
+
+            <!-- No Results -->
+            <div id="noResults" class="hidden flex-col items-center justify-center py-20">
+                <i class="ph ph-magnifying-glass text-6xl text-slate-300 dark:text-slate-600 mb-4"></i>
+                <h3 class="text-xl font-bold text-slate-700 dark:text-slate-300">No Prompts Found</h3>
+                <p class="text-slate-500 mt-2">Try searching something else or clear filters.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 translate-y-24 opacity-0 transition-all duration-400 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50 font-medium">
+        <span id="toastIcon">✅</span>
+        <span id="toastMessage">Copied!</span>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // --- 1. ADMIN READY DATA GENERATOR ---
+        // चूँकि आपने कहा है कि हज़ारों प्रॉम्प्ट्स होंगे, मैंने एक स्क्रिप्ट लिखी है 
+        // जो टेस्टिंग के लिए 50 प्रॉम्प्ट्स (केवल Placeholders के साथ) ऑटो-जेनरेट करेगी।
+        
+        const categories = [
+            { id: 'all', name: 'All Prompts', icon: 'ph-books' },
+            { id: 'science', name: 'Science & Math', icon: 'ph-atom' },
+            { id: 'history', name: 'History', icon: 'ph-hourglass-high' },
+            { id: 'coding', name: 'Coding & IT', icon: 'ph-code' },
+            { id: 'languages', name: 'Languages', icon: 'ph-translate' },
+            { id: 'exam', name: 'Exam Prep', icon: 'ph-exam' }
+        ];
+
+        // Database Simulation (Generating large volume of data)
+        let promptDatabase = [];
+        for (let i = 1; i <= 50; i++) {
+            const catIndex = Math.floor(Math.random() * (categories.length - 1)) + 1; // skip 'all'
+            promptDatabase.push({
+                id: i,
+                title: `Study Prompt Master - ${i}`,
+                image: "#IMAGE#",
+                prompt: "#PROMPT#",
+                category: categories[catIndex].name,
+                categoryId: categories[catIndex].id,
+                date: `2024-0${Math.floor(Math.random() * 9) + 1}-15`,
+                usage: Math.floor(Math.random() * 500)
+            });
+        }
+
+        let currentCategory = "all";
+        let currentSearchQuery = "";
+        let displayedCount = 12; // Initial load count
+
+        // --- 2. INITIALIZATION & RENDER LOGIC ---
+        function init() {
+            renderSidebarCategories();
+            renderCards();
+            setupSearch();
+        }
+
+        function renderSidebarCategories() {
+            const container = document.getElementById('sidebarCategories');
+            // Skip 'All' since it's hardcoded at top
+            const subCats = categories.slice(1);
+            
+            container.innerHTML = subCats.map(cat => {
+                const isActive = cat.id === currentCategory;
+                const baseClass = "flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition-colors cursor-pointer";
+                const activeClass = isActive 
+                    ? "bg-brand-50 dark:bg-brand-900/20 text-brand-600 dark:text-brand-400" 
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800";
+                
+                return `
+                    <div class="${baseClass} ${activeClass}" onclick="setCategory('${cat.id}', '${cat.name}')">
+                        <i class="ph ${cat.icon} text-lg"></i>
+                        <span class="truncate">${cat.name}</span>
+                        <span class="ml-auto text-xs bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded-full text-slate-500 dark:text-slate-300">
+                            ${promptDatabase.filter(p => p.categoryId === cat.id).length}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setCategory(id, name) {
+            currentCategory = id;
+            displayedCount = 12; // Reset pagination
+            document.getElementById('pageTitle').innerText = name || "All Prompts";
+            renderSidebarCategories();
+            renderCards();
+            if(window.innerWidth < 1024) toggleSidebar(); // Close sidebar on mobile after click
+        }
+
+        function setupSearch() {
+            const handleSearch = (e) => {
+                currentSearchQuery = e.target.value;
+                displayedCount = 12; // Reset pagination on search
+                renderCards();
+            };
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+            document.getElementById('mobileSearchInput').addEventListener('input', handleSearch);
+        }
+
+        function renderCards() {
+            const grid = document.getElementById('cardsGrid');
+            const noResults = document.getElementById('noResults');
+            const loadMoreBtn = document.getElementById('loadMoreContainer');
+            
+            // 1. Filter Data
+            const filtered = promptDatabase.filter(item => {
+                const matchCat = currentCategory === "all" || item.categoryId === currentCategory;
+                const matchSearch = item.title.toLowerCase().includes(currentSearchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            // Update Counter
+            document.getElementById('promptCount').innerText = filtered.length;
+
+            // 2. Pagination (Slice data)
+            const paginatedData = filtered.slice(0, displayedCount);
+
+            // Handle No Results
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                noResults.classList.add('flex');
+                loadMoreBtn.classList.add('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+                noResults.classList.remove('flex');
+            }
+
+            // Handle Load More Button Visibility
+            if (filtered.length <= displayedCount) {
+                loadMoreBtn.classList.add('hidden');
+            } else {
+                loadMoreBtn.classList.remove('hidden');
+            }
+
+            // 3. Render HTML
+            grid.innerHTML = paginatedData.map((item, index) => `
+                <div class="bg-white dark:bg-dark-surface border border-slate-200 dark:border-dark-border rounded-xl overflow-hidden flex flex-col card-hover">
+                    
+                    <!-- Top: Placeholder Image Area -->
+                    <div class="relative w-full aspect-video bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center border-b border-slate-200 dark:border-dark-border">
+                        <span class="text-xl font-mono tracking-widest text-slate-400 dark:text-slate-500 font-bold">
+                            ${item.image}
+                        </span>
+                        <!-- Meta info tags on image -->
+                        <div class="absolute top-2 left-2 flex gap-1">
+                            <span class="bg-white/90 dark:bg-black/60 backdrop-blur text-xs px-2 py-1 rounded shadow-sm border border-slate-200 dark:border-slate-700">
+                                ${item.category}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Details Area -->
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="font-bold text-slate-900 dark:text-white mb-3 line-clamp-1" title="${item.title}">${item.title}</h3>
+                        
+                        <!-- Prompt Preview Box -->
+                        <div class="relative bg-slate-50 dark:bg-slate-900/50 rounded-lg p-3 mb-4 border border-slate-100 dark:border-slate-800/50">
+                            <p class="font-mono text-sm text-brand-600 dark:text-brand-400 font-semibold text-center py-2">${item.prompt}</p>
+                        </div>
+
+                        <!-- Footer Actions -->
+                        <div class="mt-auto pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2">
+                            <!-- Click-to-Copy Button -->
+                            <button onclick="copyToClipboard('${item.prompt.replace(/'/g, "\\'")}', true)" 
+                                class="w-full py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="ph ph-copy"></i> Copy Prompt
+                            </button>
+                            
+                            <!-- Smart Launchers -->
+                            <div class="grid grid-cols-2 gap-2 mt-1">
+                                <button onclick="openAIApp('chatgpt', '${item.prompt.replace(/'/g, "\\'")}')" 
+                                    class="py-2 bg-[#10a37f] hover:bg-[#0d8a6b] text-white rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-1.5">
+                                    <i class="ph-fill ph-chat-teardrop-text"></i> ChatGPT
+                                </button>
+                                
+                                <button onclick="openAIApp('gemini', '${item.prompt.replace(/'/g, "\\'")}')" 
+                                    class="py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 hover:opacity-90 text-white rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-1.5">
+                                    <i class="ph-fill ph-sparkle"></i> Gemini
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadMoreCards() {
+            const loadIcon = document.getElementById('loadSpinner');
+            const loadText = document.getElementById('loadText');
+            
+            loadIcon.classList.remove('hidden');
+            loadText.innerText = "Loading...";
+
+            setTimeout(() => {
+                displayedCount += 12; // Load 12 more
+                renderCards();
+                loadIcon.classList.add('hidden');
+                loadText.innerText = "Load More Prompts";
+            }, 600); // Fake network delay for pro feel
+        }
+
+        // --- 3. THE UPGRADED DEEP LINKING & COPY LOGIC ---
+        
+        function copyToClipboard(text, showMessage = false) {
+            navigator.clipboard.writeText(text).then(() => {
+                if(showMessage) showToast("Prompt Copied to Clipboard!", "📋");
+            }).catch(err => {
+                let textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                textArea.remove();
+                if(showMessage) showToast("Prompt Copied to Clipboard!", "📋");
+            });
+        }
+
+        function openAIApp(appType, promptText) {
+            // 1. ALWAYS AUTO-COPY FIRST (Foolproof fallback)
+            copyToClipboard(promptText, false); 
+            
+            let url = "";
+            let encodedText = encodeURIComponent(promptText);
+
+            if (appType === 'chatgpt') {
+                showToast("Opening ChatGPT...", "🤖");
+                // ChatGPT Mobile App handles ?q= perfectly.
+                url = `https://chatgpt.com/?q=${encodedText}`;
+            } 
+            else if (appType === 'gemini') {
+                showToast("Opening Gemini...", "✨");
+                // GEMINI FIX: Added ?q= parameter. 
+                // Many modern Android App Intents for Gemini will catch this query.
+                // If it opens web, it might pre-fill. If not, text is ALREADY copied!
+                url = `https://gemini.google.com/app?q=${encodedText}`; 
+            }
+
+            setTimeout(() => {
+                window.open(url, '_blank');
+            }, 400); // Slight delay to show Toast animation
+        }
+
+        function showToast(message, icon) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = message;
+            document.getElementById('toastIcon').innerText = icon;
+            
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 2500);
+        }
+
+        // Mobile Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>
