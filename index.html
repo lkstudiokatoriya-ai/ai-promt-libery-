@@ -206,7 +206,121 @@
                 id: i,
                 title: `Study Prompt Master - ${i}`,
                 image: "#IMAGE#",
-                prompt: "#PROMPT#",
+                prompt: "Convert the provided text into realistic handwritten spiral notebook notes.
+Output: Return ONLY complete HTML + CSS. No explanations, markdown, comments, or extra text.
+
+IMPORTANT:
+Reproduce 100% of the provided text exactly as written.
+Content accuracy is higher priority than visual styling.
+Never omit, hide, clip, truncate, summarize, rewrite, shorten, or partially render any text.
+If additional pages are required, automatically create them.
+Every character, formula, table entry, example, definition, and note must remain fully visible.
+
+Requirements:
+Reproduce 100% of the provided text exactly as written.
+Do not summarize, shorten, rewrite, or omit any information.
+Preserve all formulas, definitions, examples, tables, diagrams, flowcharts, mind maps, question-answer sections, and lists.
+Convert any textual explanations of diagrams, processes, or relationships into appropriate handwritten visual representations where applicable.
+Ensure no text is cut off at page boundaries.
+Ensure all content remains readable in PDF export.
+Never allow any content overflow outside notebook pages.
+
+Notebook Style:
+
+Create multiple A4 spiral notebook pages instead of a single continuous canvas.
+Use page dimensions: 210mm × 297mm (A4).
+Add realistic spiral binding holes and metal rings on the left side of every page.
+Do NOT use ruled notebook lines.
+Use a clean paper texture with subtle shadows and realistic notebook appearance.
+Content should automatically flow across multiple pages when needed.
+Each page should look like a real photographed or scanned topper’s notebook.
+Maintain realistic notebook spacing and organization.
+
+Handwriting Appearance:
+Red handwritten headings for titles, definitions, laws, theorems, and important statements.
+Blue handwritten text for explanations, examples, derivations, and notes.
+Yellow highlights for formulas, keywords, values, SI units, and important answers.
+Simulate neat printed handwriting (not cursive).
+Include slight natural variations in spacing, alignment, rotation, and pen pressure.
+Maintain excellent readability at all times.
+
+Visual Elements:
+Create hand-drawn SVG diagrams wherever relevant.
+Create hand-drawn tables, flowcharts, mind maps, timelines, comparison charts, and process diagrams when the content requires them.
+Add arrows, callouts, circles, boxes, underlines, connectors, and annotations.
+Ensure all elements remain readable and never overlap.
+Prevent diagrams and tables from breaking across pages.
+Educational Labels:
+Add notebook-style callouts when appropriate:
+Most Important
+Memory Trick
+Frequently Asked
+Shortcut
+
+Page Layout Rules:
+Create realistic A4 notebook pages only.
+Fill each page naturally before creating the next page.
+Do NOT leave large blank areas at the bottom of pages.
+Automatically continue content onto the next page only when remaining space is insufficient.
+Never create an empty page or half-blank page between notebook pages.
+Prevent diagrams, tables, flowcharts, formulas, mind maps, and callout boxes from splitting across pages.
+Keep headings together with the content immediately following them.
+Ensure all text remains fully visible and is never cut off.
+If a section does not fit completely in the remaining space, move the entire section to the next page.
+Maintain smooth notebook-style page flow.
+No infographic layout.
+No poster design.
+No chapter cards.
+No continuous scrolling canvas.
+
+CSS Requirements:
+Use @page { size: A4; margin: 10mm; }
+Use box-sizing: border-box;
+Use overflow: visible;
+Use realistic paper texture.
+Use realistic notebook shadows.
+Use responsive scaling while preserving A4 proportions.
+Use page-break-after: always ONLY between completed notebook pages.
+Never insert additional blank pages.
+Ensure PDF export produces continuous page order with no half-blank pages.
+Ensure no text, formula, table, diagram, or flowchart is truncated.
+Maintain safe bottom spacing before page breaks.
+Page Break Protection:
+Apply:
+break-inside: avoid;
+page-break-inside: avoid;
+For:
+tables
+SVG diagrams
+flowcharts
+mind maps
+formulas
+callout boxes
+examples
+question-answer sections
+important notes
+highlighted blocks
+comparison charts
+Heading Protection:
+Apply:
+break-after: avoid;
+page-break-after: avoid;
+For:
+titles
+headings
+subheadings
+section labels
+Rendering Rules:
+Do not use fixed heights for content containers.
+Allow content to grow naturally.
+Create a new page only when required.
+Never clip content using overflow: hidden.
+
+Never allow text to disappear because of transforms, positioning, or page limits.
+Ensure all notebook pages appear in proper sequence without blank gaps.
+Optimize specifically for PDF generation and printing.
+Return ONLY the complete HTML document with embedded CSS.
+“Paste your Content here "",
                 category: categories[catIndex].name,
                 categoryId: categories[catIndex].id,
                 date: `2024-0${Math.floor(Math.random() * 9) + 1}-15`,
