@@ -206,7 +206,7 @@
                 id: i,
                 title: `Study Prompt Master - ${i}`,
                 image: "PDFReader_Convert_20260726_062552_1.png",
-                prompt: "Convert the provided text into realistic handwritten spiral notebook notes.
+                prompt: JSON.stringify(Convert the provided text into realistic handwritten spiral notebook notes.
 Output: Return ONLY complete HTML + CSS. No explanations, markdown, comments, or extra text.
 
 IMPORTANT:
@@ -320,7 +320,7 @@ Never allow text to disappear because of transforms, positioning, or page limits
 Ensure all notebook pages appear in proper sequence without blank gaps.
 Optimize specifically for PDF generation and printing.
 Return ONLY the complete HTML document with embedded CSS.
-“Paste your Content here "",
+“Paste your Content here "),
                 category: categories[catIndex].name,
                 categoryId: categories[catIndex].id,
                 date: `2024-0${Math.floor(Math.random() * 9) + 1}-15`,
